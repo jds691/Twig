@@ -12,6 +12,7 @@ module com.neo.twig {
 
     exports com.neo.twig;
     exports com.neo.twig.annotations;
+    exports com.neo.twig.animation;
     exports com.neo.twig.input;
     exports com.neo.twig.audio;
     exports com.neo.twig.config;
