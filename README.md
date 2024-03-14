@@ -23,9 +23,8 @@ mvn install
 To include Twig in your project add the following to your pom.xml file:
 
 ```xml
-
 <dependencies>
-    ...
+    <!--Your other dependencies here...-->
 
     <dependency>
         <groupId>com.neo</groupId>
