@@ -44,6 +44,7 @@ public final class Engine {
         }
 
         Engine.config = config;
+        Engine.config.createEngineConfigs();
         ConfigManager.setCurrentUserIdentifier(System.getProperty("user.name"));
 
         ConfigManager.loadConfig(Engine.config.appConfig());
