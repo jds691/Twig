@@ -12,8 +12,8 @@ public final class Scene implements NodeRunnable {
 
     @Override
     public void start() {
-        for (Node control : root) {
-            control.start();
+        for (Node node : root) {
+            node.start();
         }
     }
 
@@ -22,38 +22,38 @@ public final class Scene implements NodeRunnable {
         if (paused)
             return;
 
-        //BUG: Throws a ConcurrentModificationException if a Control is added mid-frame. Potentially introduce a queue
-        for (Node control : root) {
-            control.update(deltaTime);
+        //BUG: Throws a ConcurrentModificationException if a Node is added mid-frame. Potentially introduce a queue
+        for (Node node : root) {
+            node.update(deltaTime);
         }
     }
 
     @Override
     public void destroy() {
-        for (Node control : root) {
-            control.destroy();
+        for (Node node : root) {
+            node.destroy();
         }
     }
 
     /**
-     * @param control
+     * @param node
      * @apiNote Automatically calls {@link Node#start()}
      */
-    public void addToRoot(Node control) {
+    public void addToRoot(Node node) {
         synchronized (root) {
-            root.add(control);
-            control.start();
+            root.add(node);
+            node.start();
         }
     }
 
     /**
-     * @param control
+     * @param node
      * @apiNote Automatically calls {@link Node#destroy()}
      */
-    public void removeFromRoot(Node control) {
+    public void removeFromRoot(Node node) {
         synchronized (root) {
-            root.remove(control);
-            control.destroy();
+            root.remove(node);
+            node.destroy();
         }
     }
 

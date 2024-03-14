@@ -1,14 +1,14 @@
 package com.neo.twig.scene;
 
 public abstract class NodeComponent implements NodeRunnable {
-    private Node control;
+    private Node node;
 
-    public Node getControl() {
-        return control;
+    public Node getNode() {
+        return node;
     }
 
-    protected void setControl(Node control) {
-        this.control = control;
+    protected void setNode(Node node) {
+        this.node = node;
     }
 
     @Override
