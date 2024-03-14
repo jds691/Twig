@@ -2,6 +2,7 @@ package com.neo.twig;
 
 import com.neo.twig.annotations.DontSerialize;
 import com.neo.twig.config.Config;
+import javafx.scene.image.Image;
 
 import java.net.URL;
 
@@ -9,6 +10,8 @@ import java.net.URL;
 public final class AppConfig {
     public String name;
     public String version;
+    @DontSerialize
+    public Image icon;
     @DontSerialize
     public URL initialScene;
 }
