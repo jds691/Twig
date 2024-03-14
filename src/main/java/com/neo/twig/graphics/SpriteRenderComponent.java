@@ -23,7 +23,7 @@ public class SpriteRenderComponent extends RenderComponent {
     public void start() {
         super.start();
 
-        transform = getControl().getComponent(TransformComponent.class);
+        transform = getNode().getComponent(TransformComponent.class);
     }
 
     @Override

@@ -40,8 +40,8 @@ public final class Node implements NodeRunnable {
         Node ref;
         try {
             file = new FileReader(resource.getFile());
-            JSONObject controlJSON = (JSONObject) parser.parse(file);
-            ref = SceneLoader.parseNode(controlJSON, true);
+            JSONObject nodeJSON = (JSONObject) parser.parse(file);
+            ref = SceneLoader.parseNode(nodeJSON, true);
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
@@ -71,8 +71,8 @@ public final class Node implements NodeRunnable {
             component.start();
         }
 
-        for (Node control : children) {
-            control.start();
+        for (Node node : children) {
+            node.start();
         }
     }
 
@@ -82,8 +82,8 @@ public final class Node implements NodeRunnable {
             component.update(deltaTime);
         }
 
-        for (Node control : children) {
-            control.update(deltaTime);
+        for (Node node : children) {
+            node.update(deltaTime);
         }
     }
 
@@ -93,8 +93,8 @@ public final class Node implements NodeRunnable {
             component.destroy();
         }
 
-        for (Node control : children) {
-            control.destroy();
+        for (Node node : children) {
+            node.destroy();
         }
 
         Scene activeScene = Engine.getSceneService().getActiveScene();
@@ -114,7 +114,7 @@ public final class Node implements NodeRunnable {
 
     public void addComponent(NodeComponent component) {
         if (!hasComponent(component.getClass())) {
-            component.setControl(this);
+            component.setNode(this);
 
             if (hasStarted)
                 component.start();
@@ -155,18 +155,18 @@ public final class Node implements NodeRunnable {
         return false;
     }
 
-    public void addChild(Node control) {
-        children.add(control);
+    public void addChild(Node node) {
+        children.add(node);
 
         if (hasStarted)
-            control.start();
+            node.start();
     }
 
-    public void removeChild(Node control) {
-        children.remove(control);
+    public void removeChild(Node node) {
+        children.remove(node);
 
         //REVIEW: Assumes children never need to live on their own
-        control.destroy();
+        node.destroy();
     }
 
     public ArrayList<Node> getChildren() {

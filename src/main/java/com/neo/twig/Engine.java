@@ -83,6 +83,9 @@ public final class Engine {
             graphicsService.setGraphicsContext(canvas.getGraphicsContext2D());
 
             stage.setTitle(String.format("%s %s - Twig", config.appConfig().name, config.appConfig().version));
+            if (config.appConfig().icon != null) {
+                stage.getIcons().add(config.appConfig().icon);
+            }
 
             switch (config.graphicsConfig().mode) {
                 case Maximised -> stage.setMaximized(true);
