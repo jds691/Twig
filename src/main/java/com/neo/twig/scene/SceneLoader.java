@@ -116,7 +116,7 @@ final class SceneLoader {
         try {
             componentClass = (Class<? extends NodeComponent>) Class.forName(componentType);
         } catch (ClassNotFoundException e) {
-            logger.logError(String.format("Failed to load component '%s'. Ignoring component, expect errors", componentType));
+            logger.logError(String.format("Failed to load component '%s'. Ignoring component, expect errors. Ensure the components package is marked as open to Twig.", componentType));
             return null;
         }
 
