@@ -4,8 +4,9 @@ import com.neo.twig.TransformComponent;
 import com.neo.twig.annotations.ForceSerialize;
 import com.neo.twig.resources.ImageResource;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.transform.Rotate;
 
-public class SpriteRenderComponent extends RenderComponent {
+public final class SpriteRenderComponent extends RenderComponent {
     private TransformComponent transform;
     @ForceSerialize
     private ImageResource sprite;
@@ -57,8 +58,13 @@ public class SpriteRenderComponent extends RenderComponent {
         //TODO: Support engine requested size, not fixed image size
         float lengthX = (float) (getWidth() * transform.scaleX);
         float lengthY = (float) (getHeight() * transform.scaleY);
-        //When given a negative length it inverts that side
+
+        Rotate r = new Rotate(transform.rotation, transform.x, transform.y);
+        context.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
+
         context.setImageSmoothing(smooth);
+
+        //When given a negative length it inverts that side
         context.drawImage(sprite.get(), transform.x - (lengthX / 2), transform.y - (lengthY / 2), lengthX, lengthY);
         context.restore();
     }

@@ -8,4 +8,6 @@ public final class TransformComponent extends NodeComponent {
 
     public float scaleX = 1;
     public float scaleY = 1;
+
+    public float rotation = 0;
 }
