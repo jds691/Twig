@@ -17,6 +17,20 @@ class InputState {
         mouseButtons = new boolean[MouseButton.values().length];
     }
 
+    /**
+     * Creates a deep clone of another input state.
+     *
+     * @param other The input state to clone.
+     */
+    public InputState(InputState other) {
+        keys = new boolean[KeyCode.values().length];
+        mouseButtons = new boolean[MouseButton.values().length];
+
+        System.arraycopy(other.keys, 0, keys, 0, other.keys.length);
+
+        System.arraycopy(other.mouseButtons, 0, mouseButtons, 0, other.mouseButtons.length);
+    }
+
     public void setKeyState(KeyCode key, boolean pressed) {
         keys[key.ordinal()] = pressed;
     }

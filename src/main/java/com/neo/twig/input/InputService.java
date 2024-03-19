@@ -7,7 +7,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
-//TODO: wasPressed and wasReleased functions do not work correctly
 public final class InputService implements EngineService {
     private final InputState[] states;
     private final EventHandler<KeyEvent> keyEventEventHandler;
@@ -59,9 +58,9 @@ public final class InputService implements EngineService {
     public void update(float deltaTime) {
         states[2] = states[1];
         states[1] = states[0];
+        states[0] = new InputState(states[1]);
     }
 
-    //TODO: Doesn't seem to properly release keys
     private class KeyEventHandler implements EventHandler<KeyEvent> {
 
         @Override

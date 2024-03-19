@@ -145,9 +145,10 @@ public final class Engine {
         gameTimeService.updateDelta(delta);
 
         //g_PhysicsService.update(g_RealTimeService.getDeltaTime());
-        inputService.update(realTimeService.getDeltaTime());
 
         sceneService.update(gameTimeService.getDeltaTime());
+
+        inputService.update(realTimeService.getDeltaTime());
 
         graphicsService.update(gameTimeService.getDeltaTime());
 
