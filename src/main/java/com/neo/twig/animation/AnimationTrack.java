@@ -20,16 +20,16 @@ public abstract class AnimationTrack<FrameData extends KeyFrameData> {
     abstract boolean processKeyframe(FrameData data);
 
     /**
-     * Called when the engine needs to calculate an implicit frame, if supported by the track.
+     * Called when the engine needs to calculate an interpolated frame, if supported by the track.
      *
      * @param lastFrame The last explicitly declared keyframe.
      * @param nextFrame The next explicitly declared keyframe.
      * @param progress  Value between 0.0-1.0 representing the ratio of time between the two frames.
      */
-    abstract void calculateImplicitFrame(FrameData lastFrame, FrameData nextFrame, float progress);
+    abstract void calculateInterpolatedFrame(FrameData lastFrame, FrameData nextFrame, float progress);
 
     /**
-     * @return Whether the track supports calculating implicit frames.
+     * @return Whether the track supports calculating interpolated frames.
      */
-    abstract boolean getDoesSupportImplicitFrames();
+    abstract boolean getDoesSupportInterpolation();
 }
