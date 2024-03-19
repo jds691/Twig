@@ -51,7 +51,7 @@ public class FXMLComponent extends NodeComponent {
     public void destroy() {
         super.destroy();
 
-        if (uiScene != null)
+        if (uiScene != null && !Engine.getShouldQuit())
             root.getChildren().remove(uiScene.getRoot());
     }
 

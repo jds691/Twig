@@ -156,7 +156,13 @@ public final class Engine {
     }
 
     public static void quit() {
-        shouldQuit = true;
+        runAndWait(() -> {
+            shouldQuit = true;
+        });
+    }
+
+    public static boolean getShouldQuit() {
+        return shouldQuit;
     }
 
     //TODO: Fix alerts not showing and blocking the application
@@ -172,6 +178,7 @@ public final class Engine {
     public static void shutdown() {
         sceneService.destroy();
         audioService.releaseAllPlayers();
+        Platform.exit();
     }
 
     public static EngineConfig getConfig() {
