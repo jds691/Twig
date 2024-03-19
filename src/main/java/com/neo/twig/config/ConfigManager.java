@@ -1,12 +1,14 @@
 package com.neo.twig.config;
 
 import com.neo.twig.annotations.DontSerialize;
+import com.neo.twig.annotations.ForceSerialize;
 import com.neo.twig.logger.Logger;
 import org.ini4j.Profile;
 import org.ini4j.Wini;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
@@ -51,11 +53,23 @@ public class ConfigManager {
             Field[] fields = object.getClass().getDeclaredFields();
 
             for (Field field : fields) {
-                ConfigProperty config = field.getAnnotation(ConfigProperty.class);
-                boolean shouldSerialze = field.getAnnotation(DontSerialize.class) == null;
+                boolean isAccessible = false;
 
-                if (!shouldSerialze)
+                if (!Modifier.isStatic(field.getModifiers()))
+                    isAccessible = field.canAccess(object);
+
+                if (field.getAnnotation(DontSerialize.class) != null) {
+                    logger.logVerbose(String.format("Field '%s' on object '%s' has been explicitly marked with DontSerialize. Ignoring field...", field.getName(), object.getClass().getName()));
                     continue;
+                } else if (!isAccessible && field.getAnnotation(ForceSerialize.class) == null) {
+                    logger.logVerbose(String.format("Field '%s' on object '%s' is not accessible to the ConfigManager. Ignoring field...", field.getName(), object.getClass().getName()));
+                    continue;
+                } else if (!isAccessible && field.getAnnotation(ForceSerialize.class) != null) {
+                    logger.logVerbose(String.format("Field '%s' on object '%s' has been forcefully serialized", field.getName(), object.getClass().getName()));
+                    field.setAccessible(true);
+                }
+
+                ConfigProperty config = field.getAnnotation(ConfigProperty.class);
 
                 if (config != null) {
                     iniFile.put(
@@ -112,11 +126,23 @@ public class ConfigManager {
         Field[] fields = object.getClass().getDeclaredFields();
 
         for (Field field : fields) {
-            ConfigProperty config = field.getAnnotation(ConfigProperty.class);
-            boolean shouldSerialze = field.getAnnotation(DontSerialize.class) == null;
+            boolean isAccessible = false;
 
-            if (!shouldSerialze)
+            if (!Modifier.isStatic(field.getModifiers()))
+                isAccessible = field.canAccess(object);
+
+            if (field.getAnnotation(DontSerialize.class) != null) {
+                logger.logVerbose(String.format("Field '%s' on object '%s' has been explicitly marked with DontSerialize. Ignoring field...", field.getName(), object.getClass().getName()));
                 continue;
+            } else if (!isAccessible && field.getAnnotation(ForceSerialize.class) == null) {
+                logger.logVerbose(String.format("Field '%s' on object '%s' is not accessible to the ConfigManager. Ignoring field...", field.getName(), object.getClass().getName()));
+                continue;
+            } else if (!isAccessible && field.getAnnotation(ForceSerialize.class) != null) {
+                logger.logVerbose(String.format("Field '%s' on object '%s' has been forcefully serialized", field.getName(), object.getClass().getName()));
+                field.setAccessible(true);
+            }
+
+            ConfigProperty config = field.getAnnotation(ConfigProperty.class);
 
             Object val;
             if (config != null) {
