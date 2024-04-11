@@ -7,6 +7,8 @@ import java.util.ArrayList;
  * Represents and maintains a given scene hierarchy.
  */
 public final class Scene implements NodeRunnable {
+    private final ArrayList<Node> removeQueue = new ArrayList<>();
+    private final ArrayList<Node> addQueue = new ArrayList<>();
     public final ArrayList<Node> root = new ArrayList<>();
     public boolean paused;
 
@@ -28,6 +30,18 @@ public final class Scene implements NodeRunnable {
         for (Node node : root) {
             node.update(deltaTime);
         }
+
+        for (Node node : removeQueue) {
+            node.destroy(true);
+            root.remove(node);
+        }
+        removeQueue.clear();
+
+        for (Node node : addQueue) {
+            root.add(node);
+            node.start();
+        }
+        addQueue.clear();
     }
 
     @Override
@@ -35,7 +49,7 @@ public final class Scene implements NodeRunnable {
         isBeingDestroyed = true;
 
         for (Node node : root) {
-            node.destroy();
+            node.destroy(true);
         }
     }
 
@@ -47,10 +61,7 @@ public final class Scene implements NodeRunnable {
         if (isBeingDestroyed)
             return;
 
-        synchronized (root) {
-            root.add(node);
-            node.start();
-        }
+        addQueue.add(node);
     }
 
     /**
@@ -61,10 +72,7 @@ public final class Scene implements NodeRunnable {
         if (isBeingDestroyed)
             return;
 
-        synchronized (root) {
-            root.remove(node);
-            node.destroy();
-        }
+        removeQueue.add(node);
     }
 
     public boolean rootContains(Node node) {

@@ -96,15 +96,8 @@ final class SceneLoader {
             }
         }
 
-        JSONArray children = (JSONArray) json.get("children");
-        if (children != null && !children.isEmpty()) {
-            for (Object obj : children) {
-                node.addChild(parseNode((JSONObject) obj));
-            }
-        }
-
         if (!suppressLogs)
-            logger.logInfo(String.format("Created Node '%S' with %d component(s), %d children", node.getName(), node.getComponents().size(), node.getChildren().size()));
+            logger.logInfo(String.format("Created Node '%S' with %d component(s)", node.getName(), node.getComponents().size()));
 
         return node;
     }

@@ -12,12 +12,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
-//TODO: Allow for controls to add or remove themselves from the scene hierarchy
-//TODO: Implement queue for adding and deleting things mid update
 public final class Node implements NodeRunnable {
     private final int INITIAL_COMPONENT_CAPACITY = 32;
     private final ArrayList<NodeComponent> components;
-    private final ArrayList<Node> children;
     private String name;
     private boolean hasStarted;
 
@@ -25,7 +22,6 @@ public final class Node implements NodeRunnable {
         super();
 
         components = new ArrayList<>(INITIAL_COMPONENT_CAPACITY);
-        children = new ArrayList<>();
 
         loadConfig();
     }
@@ -48,19 +44,10 @@ public final class Node implements NodeRunnable {
 
         name = ref.name;
         components = ref.components;
-        children = ref.children;
     }
 
     public void instantiate() {
-        instantiate(null);
-    }
-
-    public void instantiate(Node parent) {
-        if (parent == null) {
-            Engine.getSceneService().getActiveScene().addToRoot(this);
-        } else {
-            parent.addChild(this);
-        }
+        Engine.getSceneService().getActiveScene().addToRoot(this);
     }
 
     @Override
@@ -70,10 +57,6 @@ public final class Node implements NodeRunnable {
         for (NodeComponent component : components) {
             component.start();
         }
-
-        for (Node node : children) {
-            node.start();
-        }
     }
 
     @Override
@@ -81,26 +64,25 @@ public final class Node implements NodeRunnable {
         for (NodeComponent component : components) {
             component.update(deltaTime);
         }
-
-        for (Node node : children) {
-            node.update(deltaTime);
-        }
     }
 
     @Override
     public void destroy() {
-        for (NodeComponent component : components) {
-            component.destroy();
-        }
+        destroy(false);
+    }
 
-        for (Node node : children) {
-            node.destroy();
-        }
-
+    void destroy(boolean deconstruct) {
         Scene activeScene = Engine.getSceneService().getActiveScene();
+        if (!activeScene.rootContains(this)) {
+            return;
+        }
 
-        if (activeScene.rootContains(this)) {
+        if (!deconstruct) {
             activeScene.removeFromRoot(this);
+        } else {
+            for (NodeComponent component : components) {
+                component.destroy();
+            }
         }
     }
 
@@ -153,24 +135,6 @@ public final class Node implements NodeRunnable {
         }
 
         return false;
-    }
-
-    public void addChild(Node node) {
-        children.add(node);
-
-        if (hasStarted)
-            node.start();
-    }
-
-    public void removeChild(Node node) {
-        children.remove(node);
-
-        //REVIEW: Assumes children never need to live on their own
-        node.destroy();
-    }
-
-    public ArrayList<Node> getChildren() {
-        return children;
     }
 
     public void saveConfig() {
