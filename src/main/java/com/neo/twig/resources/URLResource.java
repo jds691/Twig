@@ -4,6 +4,7 @@ import org.json.simple.JSONObject;
 
 import java.net.URL;
 
+@SuppressWarnings("unused")
 public class URLResource extends Resource<URL> {
     protected URLResource(Object json) {
         super(json);

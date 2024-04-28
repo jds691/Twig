@@ -18,6 +18,7 @@ import java.io.IOException;
  *
  * @apiNote FXMLComponents are drawn on top of the scene and are intended for creating game UI only.
  */
+@SuppressWarnings("unused")
 public class FXMLComponent extends NodeComponent {
     private static final Logger logger = Logger.getFor(FXMLComponent.class);
     private FXMLLoader loader;

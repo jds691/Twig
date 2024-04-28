@@ -17,6 +17,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 
+@SuppressWarnings("unused")
 final class SceneLoader {
     private static final Logger logger = Logger.getFor(SceneLoader.class);
     private static final JSONParser parser = new JSONParser();

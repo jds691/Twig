@@ -4,6 +4,7 @@ import com.neo.twig.Engine;
 
 import java.net.URI;
 
+@SuppressWarnings("unused")
 public abstract class AudioPlayer {
     protected Runnable onReadyCallback;
     protected boolean looping;

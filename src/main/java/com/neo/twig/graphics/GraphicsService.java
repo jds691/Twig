@@ -1,21 +1,18 @@
 package com.neo.twig.graphics;
 
 import com.neo.twig.EngineService;
-import com.neo.twig.logger.Logger;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.ArrayList;
 
+
 public final class GraphicsService implements EngineService {
     private GraphicsConfig config;
     private GraphicsContext drawable;
-    private long currentFrameNumber;
     private ArrayList<RenderComponent> renderers;
-    private Logger logger;
 
     private GraphicsService() {
         renderers = new ArrayList<>();
-        logger = Logger.getFor(getClass());
     }
 
     public GraphicsService(GraphicsConfig config) {

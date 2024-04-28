@@ -8,6 +8,7 @@ import com.neo.twig.logger.Logger;
  *
  * @param <T> The type of resource to load.
  */
+@SuppressWarnings("unused")
 public abstract class Resource<T> {
     protected static final Logger logger = Logger.getFor(Resource.class);
     private final ResourceService resourceService;

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 /**
  * Handles audio playback and mixing for the entire engine.
  */
+@SuppressWarnings("unused")
 public abstract class AudioService {
     private final ArrayList<AudioPlayer> activePlayers = new ArrayList<>();
     private AudioBus audioBusRoot;

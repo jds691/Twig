@@ -1,5 +1,6 @@
 package com.neo.twig.scene;
 
+@SuppressWarnings("unused")
 public abstract class NodeComponent implements NodeRunnable {
     private Node node;
 

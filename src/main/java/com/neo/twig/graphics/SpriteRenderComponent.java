@@ -6,6 +6,7 @@ import com.neo.twig.resources.ImageResource;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.transform.Rotate;
 
+@SuppressWarnings("unused")
 public final class SpriteRenderComponent extends RenderComponent {
     private TransformComponent transform;
     @ForceSerialize

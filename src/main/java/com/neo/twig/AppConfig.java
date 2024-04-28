@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import java.net.URL;
 
 @Config(name = "app")
+@SuppressWarnings("unused")
 public final class AppConfig {
     public String name;
     public String version;

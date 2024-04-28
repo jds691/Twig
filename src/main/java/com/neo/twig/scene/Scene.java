@@ -6,6 +6,7 @@ import java.util.ArrayList;
 /**
  * Represents and maintains a given scene hierarchy.
  */
+@SuppressWarnings("unused")
 public final class Scene implements NodeRunnable {
     private final ArrayList<Node> removeQueue = new ArrayList<>();
     private final ArrayList<Node> addQueue = new ArrayList<>();

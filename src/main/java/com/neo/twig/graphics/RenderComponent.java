@@ -6,6 +6,7 @@ import com.neo.twig.scene.RunInEditor;
 import javafx.scene.canvas.GraphicsContext;
 
 @RunInEditor
+@SuppressWarnings("unused")
 public abstract class RenderComponent extends NodeComponent {
     private final GraphicsService graphicsService;
 

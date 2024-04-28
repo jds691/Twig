@@ -2,6 +2,7 @@ package com.neo.twig.audio;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("unused")
 public class AudioBus {
     private AudioBus parentBus;
     private ArrayList<AudioBus> childBuses;

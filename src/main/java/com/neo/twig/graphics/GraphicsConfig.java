@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
  * It is recommended to save graphics settings under the {@link com.neo.twig.config.ConfigScope} scope.
  */
 @Config(name = "graphics")
+@SuppressWarnings("unused")
 public class GraphicsConfig {
     public int width = 320;
     public int height = 240;

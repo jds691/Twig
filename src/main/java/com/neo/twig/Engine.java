@@ -22,7 +22,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.FutureTask;
 
 public final class Engine {
-    public static final CountDownLatch latch = new CountDownLatch(1);
+    private static final CountDownLatch latch = new CountDownLatch(1);
     static boolean isEditor;
     static boolean shouldQuit;
     private static boolean initialised;
@@ -38,6 +38,7 @@ public final class Engine {
     private static InputService inputService;
     private static ResourceService resourceService;
 
+    @SuppressWarnings("unused")
     public static boolean init(EngineConfig config) {
         if (Arrays.stream(config.args()).toList().contains("editor")) {
             isEditor = true;
@@ -74,6 +75,7 @@ public final class Engine {
         return true;
     }
 
+    @SuppressWarnings("unused")
     public static void start() {
         Platform.startup(() -> {
             Stage stage = new Stage();
@@ -136,7 +138,7 @@ public final class Engine {
         }
     }
 
-    public static void runFrame() {
+    private static void runFrame() {
         long highResTime = System.currentTimeMillis();
 
         float delta = (float) (highResTime - startDelta);
@@ -155,12 +157,14 @@ public final class Engine {
         startDelta = highResTime;
     }
 
+    @SuppressWarnings("unused")
     public static void quit() {
         runAndWait(() -> {
             shouldQuit = true;
         });
     }
 
+    @SuppressWarnings("unused")
     public static boolean getShouldQuit() {
         return shouldQuit;
     }
@@ -175,28 +179,32 @@ public final class Engine {
         alert.showAndWait().filter(response -> response == ButtonType.OK).ifPresent(response -> quit());
     }
 
-    public static void shutdown() {
+    private static void shutdown() {
         sceneService.destroy();
         audioService.releaseAllPlayers();
         Platform.exit();
     }
 
+    @SuppressWarnings("unused")
     public static EngineConfig getConfig() {
         return config;
     }
 
+    @SuppressWarnings("unused")
     public static AudioService getAudioService() {
         assert initialised;
 
         return audioService;
     }
 
+    @SuppressWarnings("unused")
     public static GraphicsService getGraphicsService() {
         assert initialised;
 
         return graphicsService;
     }
 
+    @SuppressWarnings("unused")
     public static TimeService getTimeService() {
         assert initialised;
 
@@ -209,18 +217,21 @@ public final class Engine {
         return g_PhysicsService;
     }*/
 
+    @SuppressWarnings("unused")
     public static SceneService getSceneService() {
         assert initialised;
 
         return sceneService;
     }
 
+    @SuppressWarnings("unused")
     public static InputService getInputService() {
         assert initialised;
 
         return inputService;
     }
 
+    @SuppressWarnings("unused")
     public static ResourceService getResourceService() {
         assert initialised;
 
@@ -238,6 +249,7 @@ public final class Engine {
         return new Scene(pane);
     }
 
+    @SuppressWarnings("unused")
     public static boolean isEditor() {
         return isEditor;
     }

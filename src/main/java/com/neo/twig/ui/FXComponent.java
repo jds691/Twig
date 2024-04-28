@@ -16,6 +16,7 @@ import javafx.scene.paint.Color;
  * The subclass of this component should also be used as the Controller for the UI.
  * </p>
  */
+@SuppressWarnings("unused")
 public abstract class FXComponent extends NodeComponent {
     private static final Logger logger = Logger.getFor(FXComponent.class);
     private Pane root;

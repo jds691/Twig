@@ -2,6 +2,7 @@ package com.neo.twig;
 
 import com.neo.twig.scene.NodeComponent;
 
+@SuppressWarnings("unused")
 public final class TransformComponent extends NodeComponent {
     public float x;
     public float y;

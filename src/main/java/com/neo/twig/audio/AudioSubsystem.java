@@ -1,5 +1,6 @@
 package com.neo.twig.audio;
 
+@SuppressWarnings("unused")
 public enum AudioSubsystem {
     /**
      * Automatically determines the best subsystem based on the current platform.

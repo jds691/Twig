@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
+@SuppressWarnings("unused")
 public final class Node implements NodeRunnable {
     private final int INITIAL_COMPONENT_CAPACITY = 32;
     private final ArrayList<NodeComponent> components;

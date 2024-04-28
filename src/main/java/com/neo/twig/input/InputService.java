@@ -7,6 +7,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
+@SuppressWarnings("unused")
 public final class InputService implements EngineService {
     private final InputState[] states;
     private final EventHandler<KeyEvent> keyEventEventHandler;

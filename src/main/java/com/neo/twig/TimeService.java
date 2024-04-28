@@ -4,7 +4,6 @@ public final class TimeService {
     private float timeScale;
     private boolean m_Paused;
 
-    private float m_RunTime;
     private float m_DeltaTime;
 
     public TimeService() {
@@ -17,7 +16,6 @@ public final class TimeService {
         if (m_Paused) return;
 
         m_DeltaTime = highResDeltaTime * timeScale;
-        m_RunTime += m_DeltaTime;
     }
 
     public float getDeltaTime() {

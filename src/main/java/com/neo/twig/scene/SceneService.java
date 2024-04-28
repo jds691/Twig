@@ -9,6 +9,7 @@ import java.util.ArrayList;
 /**
  * Handles and updates the scene lifecycle.
  */
+@SuppressWarnings("unused")
 public final class SceneService implements EngineService {
     private final ArrayList<Scene> registeredScenes;
     private Stage stage;

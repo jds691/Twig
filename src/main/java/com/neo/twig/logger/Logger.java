@@ -1,5 +1,6 @@
 package com.neo.twig.logger;
 
+@SuppressWarnings("unused")
 public class Logger {
     private static Level loggingLevel = Level.INFO;
     private String name;

@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.BiFunction;
 
+@SuppressWarnings("unused")
 public class ConfigManager {
     private static Object userIdentifier;
     private static Logger logger = Logger.getFor(ConfigManager.class);
