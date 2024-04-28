@@ -83,4 +83,29 @@ public final class Scene implements NodeRunnable {
             return root.contains(node);
         }
     }
+
+    public boolean rootContains(String name) {
+        if (isBeingDestroyed)
+            return false;
+
+        name = name.toLowerCase();
+
+        for (Node node : root) {
+            if (node.getName().toLowerCase().equals(name))
+                return true;
+        }
+
+        return false;
+    }
+
+    public Node findRootNode(String name) {
+        name = name.toLowerCase();
+
+        for (Node node : root) {
+            if (node.getName().toLowerCase().equals(name))
+                return node;
+        }
+
+        return null;
+    }
 }
