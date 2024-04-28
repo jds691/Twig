@@ -21,10 +21,33 @@ public class ImageResource extends Resource<Image> {
             throw new RuntimeException(e);
         }
 
-        try {
-            return new Image(loader.getResource((String) resource.get("resource")).openStream());
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (resource.containsKey("requestedWidth") &&
+                resource.containsKey("requestedHeight")) {
+            double requestedWidth = Double.parseDouble(resource.get("requestedWidth").toString());
+            double requestedHeight = Double.parseDouble(resource.get("requestedHeight").toString());
+            boolean preserveAspectRatio = true;
+
+            if (resource.containsKey("preserveAspectRatio")) {
+                preserveAspectRatio = Boolean.parseBoolean(resource.get("preserveAspectRatio").toString());
+            }
+
+            try {
+                return new Image(
+                        loader.getResource((String) resource.get("resource")).openStream(),
+                        requestedWidth,
+                        requestedHeight,
+                        preserveAspectRatio,
+                        false
+                );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                return new Image(loader.getResource((String) resource.get("resource")).openStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         return null;
