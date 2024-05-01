@@ -15,6 +15,7 @@ module com.neo.twig {
     exports com.neo.twig.input;
     exports com.neo.twig.audio;
     exports com.neo.twig.config;
+    exports com.neo.twig.events;
     exports com.neo.twig.scene;
     exports com.neo.twig.graphics;
     exports com.neo.twig.logger;
