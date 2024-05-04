@@ -52,6 +52,8 @@ public final class Scene implements NodeRunnable {
         for (Node node : root) {
             node.destroy(true);
         }
+
+        root.clear();
     }
 
     /**

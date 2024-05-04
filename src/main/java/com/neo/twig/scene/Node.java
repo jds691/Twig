@@ -74,9 +74,6 @@ public final class Node implements NodeRunnable {
 
     void destroy(boolean deconstruct) {
         Scene activeScene = Engine.getSceneService().getActiveScene();
-        if (!activeScene.rootContains(this)) {
-            return;
-        }
 
         if (!deconstruct) {
             activeScene.removeFromRoot(this);
@@ -84,6 +81,8 @@ public final class Node implements NodeRunnable {
             for (NodeComponent component : components) {
                 component.destroy();
             }
+
+            components.clear();
         }
     }
 
