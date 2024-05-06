@@ -47,7 +47,7 @@ public abstract class FXComponent extends NodeComponent {
      *
      * @param visible Maps to the boolean parameter of the original method.
      */
-    public final void setVisible(boolean visible) {
+    public void setVisible(boolean visible) {
         uiScene.getRoot().setVisible(visible);
     }
 
