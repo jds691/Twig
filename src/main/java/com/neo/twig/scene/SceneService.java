@@ -36,6 +36,7 @@ public final class SceneService implements EngineService {
      * @param resource URL path to the scene resource.
      */
     public void setScene(URL resource) {
+        getStage().getScene().getStylesheets().clear();
         Scene scene = SceneLoader.loadFrom(resource);
 
         destroyRegisteredScenes();

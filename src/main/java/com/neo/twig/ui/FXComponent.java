@@ -1,8 +1,10 @@
 package com.neo.twig.ui;
 
 import com.neo.twig.Engine;
+import com.neo.twig.annotations.ForceSerialize;
 import com.neo.twig.graphics.GraphicsConfig;
 import com.neo.twig.logger.Logger;
+import com.neo.twig.resources.StylesheetResource;
 import com.neo.twig.scene.NodeComponent;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -22,12 +24,23 @@ public abstract class FXComponent extends NodeComponent {
     private Pane root;
     private Scene uiScene;
 
+    @ForceSerialize
+    private StylesheetResource[] stylesheets = new StylesheetResource[0];
+
     @Override
     public void start() {
         super.start();
 
         GraphicsConfig graphics = Engine.getConfig().graphicsConfig();
         uiScene = new Scene(generateFXScene(), graphics.width, graphics.height);
+        uiScene.getStylesheets().clear();
+
+        for (StylesheetResource stylesheet : stylesheets) {
+            String stylesheetLocation = stylesheet.get();
+            Engine.getSceneService().getStage().getScene().getStylesheets().add(stylesheetLocation);
+            logger.logVerbose("Loaded stylesheet: '" + stylesheetLocation + "'");
+        }
+
         uiScene.setFill(Color.TRANSPARENT);
         root = (Pane) Engine.getSceneService().getStage().getScene().getRoot();
         root.getChildren().add(uiScene.getRoot());

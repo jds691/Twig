@@ -11,10 +11,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -171,6 +168,28 @@ final class SceneLoader {
                                 component,
                                 resourceConstructor.newInstance(fieldValue)
                         );
+                    } else if (fieldValue.getClass() == JSONArray.class) {
+                        JSONArray valueArray  = (JSONArray) fieldValue;
+                        Class<?> fieldArrayType = fieldType.componentType();
+
+                        Object fieldArray = Array.newInstance(fieldArrayType, valueArray.size());
+
+                        for (int i = 0; i < valueArray.size(); i++) {
+                            Object jsonValueObject = valueArray.get(i);
+
+                            //TODO: For the love of god clean this up
+                            if (fieldArrayType.getSuperclass() == Resource.class) {
+                                Constructor<?> resourceConstructor = fieldArrayType.getDeclaredConstructor(Object.class);
+                                resourceConstructor.setAccessible(true);
+                                Object resourceObject = resourceConstructor.newInstance(jsonValueObject);
+
+                                Array.set(fieldArray, i, resourceObject);
+                            } else {
+                                Array.set(fieldArray, i, jsonValueObject);
+                            }
+                        }
+
+                        field.set(component, fieldArray);
                     } else {
                         field.set(component, fieldValue);
                     }
