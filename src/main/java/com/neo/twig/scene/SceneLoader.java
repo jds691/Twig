@@ -16,6 +16,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 @SuppressWarnings("unused")
 final class SceneLoader {
@@ -130,7 +132,10 @@ final class SceneLoader {
             return null;
         }
 
-        Field[] fields = component.getClass().getDeclaredFields();
+        ArrayList<Field> fields = new ArrayList<>();
+        for (Class<?> c = component.getClass(); c != null; c = c.getSuperclass()) {
+            fields.addAll(Arrays.asList(c.getDeclaredFields()));
+        }
 
         for (Field field : fields) {
             boolean isAccessible = false;
