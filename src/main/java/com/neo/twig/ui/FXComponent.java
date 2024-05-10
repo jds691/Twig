@@ -20,7 +20,7 @@ import javafx.scene.paint.Color;
  */
 @SuppressWarnings("unused")
 public abstract class FXComponent extends NodeComponent {
-    private static final Logger logger = Logger.getFor(FXComponent.class);
+    private Logger logger;
     private Pane root;
     private Scene uiScene;
 
@@ -31,6 +31,7 @@ public abstract class FXComponent extends NodeComponent {
     public void start() {
         super.start();
 
+        logger = Logger.getFor(getClass());
         GraphicsConfig graphics = Engine.getConfig().graphicsConfig();
         uiScene = new Scene(generateFXScene(), graphics.width, graphics.height);
         uiScene.getStylesheets().clear();
@@ -44,7 +45,7 @@ public abstract class FXComponent extends NodeComponent {
         uiScene.setFill(Color.TRANSPARENT);
         root = (Pane) Engine.getSceneService().getStage().getScene().getRoot();
         root.getChildren().add(uiScene.getRoot());
-        logger.logInfo("Successfully generated FX UI.");
+        logger.logInfo("Successfully generated FX UI");
     }
 
     @Override
