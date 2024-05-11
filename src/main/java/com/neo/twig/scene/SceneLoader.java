@@ -153,55 +153,60 @@ final class SceneLoader {
 
             Object fieldValue = json.get(field.getName());
             if (fieldValue != null) {
+                Class<?> fieldType = field.getType();
+                Object value = parseValue(fieldType, fieldValue.getClass(), fieldValue);
+
                 try {
-                    /*
-                    TODO: Allow fields to declare custom deserializers e.g.
-                     Allow the Resource<T> class to take a string and load the correct URL
-                      */
-                    Class<?> fieldType = field.getType();
-
-                    if (fieldType.getSuperclass() == Resource.class) {
-                        Constructor<?> resourceConstructor = fieldType.getDeclaredConstructor(Object.class);
-                        resourceConstructor.setAccessible(true);
-
-                        field.set(
-                                component,
-                                resourceConstructor.newInstance(fieldValue)
-                        );
-                    } else if (fieldValue.getClass() == JSONArray.class) {
-                        JSONArray valueArray  = (JSONArray) fieldValue;
-                        Class<?> fieldArrayType = fieldType.componentType();
-
-                        Object fieldArray = Array.newInstance(fieldArrayType, valueArray.size());
-
-                        for (int i = 0; i < valueArray.size(); i++) {
-                            Object jsonValueObject = valueArray.get(i);
-
-                            //TODO: For the love of god clean this up
-                            if (fieldArrayType.getSuperclass() == Resource.class) {
-                                Constructor<?> resourceConstructor = fieldArrayType.getDeclaredConstructor(Object.class);
-                                resourceConstructor.setAccessible(true);
-                                Object resourceObject = resourceConstructor.newInstance(jsonValueObject);
-
-                                Array.set(fieldArray, i, resourceObject);
-                            } else {
-                                Array.set(fieldArray, i, jsonValueObject);
-                            }
-                        }
-
-                        field.set(component, fieldArray);
-                    } else {
-                        field.set(component, fieldValue);
-                    }
-
-                    field.setAccessible(isAccessible);
-                } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException |
-                         InstantiationException e) {
-                    throw new RuntimeException(e);
+                    field.set(
+                            component,
+                            value
+                    );
+                } catch (IllegalAccessException e) {
+                    logger.logFatal("Unable to parse field.");
+                    throw new RuntimeException();
                 }
             }
+
+            field.setAccessible(isAccessible);
         }
 
         return component;
+    }
+
+    private static Object parseValue(Class<?> intendedType, Class<?> currentType, Object value) {
+        try {
+            /*
+             * TODO: Allow fields to declare custom deserializers e.g.
+             * Allow the Resource<T> class to take a string and load the correct URL
+             */
+            if (Resource.class.isAssignableFrom(intendedType)) {
+                Constructor<?> resourceConstructor = intendedType.getDeclaredConstructor(Object.class);
+                resourceConstructor.setAccessible(true);
+
+                return resourceConstructor.newInstance(value);
+            } else if (currentType == JSONArray.class && currentType != intendedType) { //You never know, some freak might be looking for a JSONArray
+                JSONArray valueArray = (JSONArray) value;
+                Class<?> fieldArrayType = intendedType.componentType();
+
+                Object fieldArray = Array.newInstance(fieldArrayType, valueArray.size());
+
+                for (int i = 0; i < valueArray.size(); i++) {
+                    Object jsonValueObject = valueArray.get(i);
+
+                    currentType = fieldArrayType;
+                    if (jsonValueObject.getClass() == JSONArray.class)
+                        currentType = JSONArray.class;
+
+                    Array.set(fieldArray, i, parseValue(fieldArrayType, currentType, jsonValueObject));
+                }
+
+                return fieldArray;
+            } else {
+                return value;
+            }
+        } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException |
+                 InstantiationException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
