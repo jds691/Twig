@@ -7,9 +7,7 @@ import com.neo.twig.logger.Logger;
 import com.neo.twig.resources.StylesheetResource;
 import com.neo.twig.scene.NodeComponent;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 
 /**
  * Allows creating JavaFX UI in engine by using the Java API instead of .fxml files.
@@ -22,7 +20,7 @@ import javafx.scene.paint.Color;
 public abstract class FXComponent extends NodeComponent {
     private Logger logger;
     private Pane root;
-    private Scene uiScene;
+    private Parent uiRoot;
 
     @ForceSerialize
     private StylesheetResource[] stylesheets = new StylesheetResource[0];
@@ -33,18 +31,17 @@ public abstract class FXComponent extends NodeComponent {
 
         logger = Logger.getFor(getClass());
         GraphicsConfig graphics = Engine.getConfig().graphicsConfig();
-        uiScene = new Scene(generateFXScene(), graphics.width, graphics.height);
-        uiScene.getStylesheets().clear();
+        uiRoot = generateFXScene();
+        uiRoot.getStylesheets().clear();
 
         for (StylesheetResource stylesheet : stylesheets) {
             String stylesheetLocation = stylesheet.get();
-            Engine.getSceneService().getStage().getScene().getStylesheets().add(stylesheetLocation);
+            uiRoot.getStylesheets().add(stylesheetLocation);
             logger.logVerbose("Loaded stylesheet: '" + stylesheetLocation + "'");
         }
 
-        uiScene.setFill(Color.TRANSPARENT);
         root = (Pane) Engine.getSceneService().getStage().getScene().getRoot();
-        root.getChildren().add(uiScene.getRoot());
+        root.getChildren().add(uiRoot);
         logger.logInfo("Successfully generated FX UI");
     }
 
@@ -52,8 +49,8 @@ public abstract class FXComponent extends NodeComponent {
     public void destroy() {
         super.destroy();
 
-        if (uiScene != null && !Engine.getShouldQuit())
-            root.getChildren().remove(uiScene.getRoot());
+        if (uiRoot != null && !Engine.getShouldQuit())
+            root.getChildren().remove(uiRoot);
     }
 
     /**
@@ -62,7 +59,7 @@ public abstract class FXComponent extends NodeComponent {
      * @param visible Maps to the boolean parameter of the original method.
      */
     public void setVisible(boolean visible) {
-        uiScene.getRoot().setVisible(visible);
+        uiRoot.setVisible(visible);
     }
 
     /**
