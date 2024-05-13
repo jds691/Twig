@@ -1,7 +1,10 @@
 package com.neo.twig.resources;
 
 import com.neo.twig.Engine;
+import com.neo.twig.events.Event;
 import com.neo.twig.logger.Logger;
+
+import java.net.URI;
 
 /**
  * Represents a resource that can be loaded by the engine.
@@ -12,8 +15,13 @@ import com.neo.twig.logger.Logger;
 public abstract class Resource<T> {
     protected static final Logger logger = Logger.getFor(Resource.class);
     private final ResourceService resourceService;
+    private URI origin;
     private final Object jsonData;
     private T cachedResource;
+
+    private Event<?> resourceNeedsHotReload;
+
+    private Event<Resource<T>> hotReloadRequested;
 
     protected Resource(Object json) {
         resourceService = Engine.getResourceService();
@@ -41,7 +49,25 @@ public abstract class Resource<T> {
      */
     protected abstract T decodeResource(Object jsonObject);
 
+    protected void setReloadPath(URI path) {
+        origin = path;
+        resourceNeedsHotReload = resourceService.requestFileWatch(path);
+
+        if (resourceNeedsHotReload != null)
+            resourceNeedsHotReload.addHandler(this::handleHotReload);
+    }
+
+    private void handleHotReload(Object ignored) {
+        cachedResource = decodeResource(jsonData);
+        hotReloadRequested.emit(this);
+    }
+
+    public Event<?> getHotReloadRequestedEvent() {
+        return hotReloadRequested;
+    }
+
     public void release() {
+        //TODO: Stop watching hot reload files
         resourceService.releaseResource(jsonData.hashCode());
         cachedResource = null;
     }

@@ -68,4 +68,10 @@ public abstract class FXComponent extends NodeComponent {
      * @return Built UI
      */
     public abstract Parent generateFXScene();
+
+    private void handleStylesheetHotReload(StylesheetResource resource) {
+        //TODO: Make preserve CSS hierarchy
+        uiRoot.getStylesheets().remove(resource.get());
+        uiRoot.getStylesheets().add(resource.get());
+    }
 }

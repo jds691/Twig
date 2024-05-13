@@ -17,7 +17,6 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.FutureTask;
 
@@ -40,8 +39,14 @@ public final class Engine {
 
     @SuppressWarnings("unused")
     public static boolean init(EngineConfig config) {
-        if (Arrays.stream(config.args()).toList().contains("editor")) {
-            isEditor = true;
+        for (String arg : config.args()) {
+            if (arg.equals("-editor")) {
+                isEditor = true;
+            }
+
+            if (arg.startsWith("-hot-reload")) {
+                resourceService = new ResourceService(true);
+            }
         }
 
         Engine.config = config;
@@ -64,7 +69,8 @@ public final class Engine {
 
         inputService = new InputService();
 
-        resourceService = new ResourceService();
+        if (resourceService == null)
+            resourceService = new ResourceService();
 
         //g_PhysicsService = new PhysicsService();
 
@@ -147,6 +153,8 @@ public final class Engine {
         gameTimeService.updateDelta(delta);
 
         //g_PhysicsService.update(g_RealTimeService.getDeltaTime());
+
+        resourceService.update();
 
         sceneService.update(gameTimeService.getDeltaTime());
 
