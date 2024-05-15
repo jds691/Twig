@@ -7,7 +7,8 @@ import javafx.scene.paint.Color;
 /**
  * Represents the graphics settings of the engine.
  * <p>
- * It is recommended to save graphics settings under the {@link com.neo.twig.config.ConfigScope} scope.
+ * It is recommended to save graphics settings under the {@link com.neo.twig.config.ConfigScope#Shared} scope.
+ * </p>
  */
 @Config(name = "graphics")
 @SuppressWarnings("unused")
