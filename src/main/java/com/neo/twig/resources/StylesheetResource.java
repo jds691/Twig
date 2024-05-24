@@ -3,7 +3,7 @@ package com.neo.twig.resources;
 import org.json.simple.JSONObject;
 
 public class StylesheetResource extends Resource<String> {
-    protected StylesheetResource(Object json) {
+    public StylesheetResource(Object json) {
         super(json);
     }
 

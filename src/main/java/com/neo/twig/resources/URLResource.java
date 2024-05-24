@@ -6,7 +6,7 @@ import java.net.URL;
 
 @SuppressWarnings("unused")
 public class URLResource extends Resource<URL> {
-    protected URLResource(Object json) {
+    public URLResource(Object json) {
         super(json);
     }
 

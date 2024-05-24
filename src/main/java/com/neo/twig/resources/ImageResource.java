@@ -7,7 +7,7 @@ import java.io.IOException;
 
 @SuppressWarnings("unused")
 public class ImageResource extends Resource<Image> {
-    protected ImageResource(Object json) {
+    public ImageResource(Object json) {
         super(json);
     }
 
