@@ -1,5 +1,8 @@
 # Twig
 
+> [!IMPORTANT]
+> Twig is not supported by me anymore due to the complexity required to maintain it for relatively little pay off.
+
 Twig is a WIP lightweight game library powered by JavaFX. It is the most cursed API I have ever created.
 
 Twig's features were built to facilitate a simple game project for my University course and as such are not the most
