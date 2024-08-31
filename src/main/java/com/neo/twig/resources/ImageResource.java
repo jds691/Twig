@@ -1,9 +1,11 @@
 package com.neo.twig.resources;
 
+import com.neo.twig.Engine;
 import javafx.scene.image.Image;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
+import java.nio.file.Path;
 
 @SuppressWarnings("unused")
 public class ImageResource extends Resource<Image> {
@@ -14,13 +16,8 @@ public class ImageResource extends Resource<Image> {
     @Override
     protected Image decodeResource(Object jsonObject) {
         JSONObject resource = (JSONObject) jsonObject;
-        Class<?> loader;
 
-        try {
-            loader = Class.forName((String) resource.get("class"));
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        Path resourcePath = ResourcePath.resolveAssetPath(resource.get("path").toString());
 
         if (resource.containsKey("requestedWidth") &&
                 resource.containsKey("requestedHeight")) {
@@ -34,7 +31,8 @@ public class ImageResource extends Resource<Image> {
 
             try {
                 return new Image(
-                        loader.getResource((String) resource.get("resource")).openStream(),
+                        resourcePath.toFile().toURL().openStream(),
+                        //loader.getResource((String) resource.get("resource")).openStream(),
                         requestedWidth,
                         requestedHeight,
                         preserveAspectRatio,
@@ -45,7 +43,8 @@ public class ImageResource extends Resource<Image> {
             }
         } else {
             try {
-                return new Image(loader.getResource((String) resource.get("resource")).openStream());
+                //return new Image(loader.getResource((String) resource.get("resource")).openStream());
+                return new Image(resourcePath.toFile().toURL().openStream());
             } catch (IOException e) {
                 e.printStackTrace();
             }

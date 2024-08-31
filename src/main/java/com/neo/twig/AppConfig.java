@@ -2,6 +2,7 @@ package com.neo.twig;
 
 import com.neo.twig.annotations.DontSerialize;
 import com.neo.twig.config.Config;
+import com.neo.twig.resources.ResourcePath;
 import javafx.scene.image.Image;
 
 import java.net.URL;
@@ -14,5 +15,5 @@ public final class AppConfig {
     @DontSerialize
     public Image icon;
     @DontSerialize
-    public URL initialScene;
+    public ResourcePath initialScene;
 }

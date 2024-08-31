@@ -17,6 +17,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.FutureTask;
@@ -95,7 +96,12 @@ public final class Engine {
             }
 
             getSceneService().setStage(stage);
-            getSceneService().setScene(config.appConfig().initialScene);
+            try {
+                getSceneService().setScene(config.appConfig().initialScene.getPath().toFile().toURL());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
 
             stage.setResizable(config.graphicsConfig().allowWindowResizing);
             stage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, (event) -> {

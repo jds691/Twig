@@ -1,6 +1,10 @@
 package com.neo.twig.resources;
 
+import com.neo.twig.Engine;
 import org.json.simple.JSONObject;
+
+import java.net.MalformedURLException;
+import java.nio.file.Path;
 
 public class StylesheetResource extends Resource<String> {
     protected StylesheetResource(Object json) {
@@ -10,14 +14,14 @@ public class StylesheetResource extends Resource<String> {
     @Override
     protected String decodeResource(Object jsonObject) {
         JSONObject resource = (JSONObject) jsonObject;
-        Class<?> loader;
+
+        Path resourcePath = ResourcePath.resolveAssetPath(resource.get("path").toString());
 
         try {
-            loader = Class.forName((String) resource.get("class"));
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            return resourcePath.toFile().toURL().toExternalForm();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            return null;
         }
-
-        return loader.getResource((String) resource.get("resource")).toExternalForm();
     }
 }

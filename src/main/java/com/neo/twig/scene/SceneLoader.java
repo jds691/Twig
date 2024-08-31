@@ -1,9 +1,11 @@
 package com.neo.twig.scene;
 
+import com.neo.twig.Engine;
 import com.neo.twig.annotations.DontSerialize;
 import com.neo.twig.annotations.ForceSerialize;
 import com.neo.twig.logger.Logger;
 import com.neo.twig.resources.Resource;
+import com.neo.twig.resources.ResourcePath;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -13,6 +15,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.*;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -61,19 +64,11 @@ final class SceneLoader {
             //TODO: Add log back
             //logger.logInfo(String.format("Loading TwigControl from '%s'...", location));
 
-            Class<?> loader;
-
-            try {
-                loader = Class.forName((String) locationData.get("class"));
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-
-            URL resource = loader.getResource((String) locationData.get("resource"));
+            Path resourcePath = ResourcePath.resolveAssetPath(locationData.get("path").toString());
 
             FileReader file;
             try {
-                file = new FileReader(resource.getFile());
+                file = new FileReader(resourcePath.toFile());
                 JSONObject nodeJSON = (JSONObject) parser.parse(file);
                 node = parseNode(nodeJSON, true);
             } catch (IOException | ParseException e) {
