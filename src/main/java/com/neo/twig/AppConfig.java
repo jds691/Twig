@@ -13,7 +13,7 @@ public final class AppConfig {
     public String name;
     public String version;
     @DontSerialize
-    public Image icon;
+    public ResourcePath icon;
     @DontSerialize
     public ResourcePath initialScene;
 }

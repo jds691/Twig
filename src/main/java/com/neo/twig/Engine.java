@@ -4,6 +4,7 @@ import com.neo.twig.audio.AudioService;
 import com.neo.twig.config.ConfigManager;
 import com.neo.twig.graphics.GraphicsService;
 import com.neo.twig.input.InputService;
+import com.neo.twig.logger.Logger;
 import com.neo.twig.resources.ResourceService;
 import com.neo.twig.scene.SceneService;
 import javafx.application.Platform;
@@ -11,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
@@ -38,6 +40,8 @@ public final class Engine {
     private static SceneService sceneService;
     private static InputService inputService;
     private static ResourceService resourceService;
+
+    private static final Logger logger = Logger.getFor(Engine.class);
 
     @SuppressWarnings("unused")
     public static boolean init(EngineConfig config) {
@@ -87,7 +91,13 @@ public final class Engine {
 
             stage.setTitle(String.format("%s %s - Twig", config.appConfig().name, config.appConfig().version));
             if (config.appConfig().icon != null) {
-                stage.getIcons().add(config.appConfig().icon);
+                try {
+                    Image icon = new Image(config.appConfig().icon.getPath().toFile().toURL().toExternalForm());
+                    stage.getIcons().add(icon);
+                } catch (MalformedURLException e) {
+                    logger.logError("Unable to load game icon");
+                }
+
             }
 
             switch (config.graphicsConfig().mode) {
