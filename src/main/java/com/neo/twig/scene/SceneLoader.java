@@ -175,10 +175,21 @@ final class SceneLoader {
              * Allow the Resource<T> class to take a string and load the correct URL
              */
             if (Resource.class.isAssignableFrom(intendedType)) {
-                Constructor<?> resourceConstructor = intendedType.getDeclaredConstructor(Object.class);
-                resourceConstructor.setAccessible(true);
+                // For resources that only need a path, a string to the path can be passed instead of a whole JSON object
+                if (currentType == String.class) {
+                    JSONObject jsonValue = new JSONObject();
+                    jsonValue.put("path", value);
 
-                return resourceConstructor.newInstance(value);
+                    Constructor<?> resourceConstructor = intendedType.getDeclaredConstructor(Object.class);
+                    resourceConstructor.setAccessible(true);
+
+                    return resourceConstructor.newInstance(jsonValue);
+                } else {
+                    Constructor<?> resourceConstructor = intendedType.getDeclaredConstructor(Object.class);
+                    resourceConstructor.setAccessible(true);
+
+                    return resourceConstructor.newInstance(value);
+                }
             } else if (currentType == JSONArray.class && currentType != intendedType) { //You never know, some freak might be looking for a JSONArray
                 JSONArray valueArray = (JSONArray) value;
                 Class<?> fieldArrayType = intendedType.componentType();
@@ -189,8 +200,11 @@ final class SceneLoader {
                     Object jsonValueObject = valueArray.get(i);
 
                     currentType = fieldArrayType;
+
                     if (jsonValueObject.getClass() == JSONArray.class)
                         currentType = JSONArray.class;
+                    else if (jsonValueObject.getClass() == String.class)
+                        currentType = String.class;
 
                     Array.set(fieldArray, i, parseValue(fieldArrayType, currentType, jsonValueObject));
                 }
