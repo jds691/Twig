@@ -20,7 +20,7 @@ public class ResourcePath {
 
     public Path getPath() {
         if (resolvedPath == null) {
-            resolvedPath = Path.of(Engine.getConfig().resourcesConfig().resourceDirectory, assetPath);
+            resolvedPath = Path.of(Engine.getConfig().resourcesConfig().rootDirectory, assetPath);
             Logger.getFor(ResourcePath.class).logDebug(resolvedPath.toString());
         }
 
@@ -28,6 +28,6 @@ public class ResourcePath {
     }
 
     public static Path resolveAssetPath(String assetPath) {
-        return Path.of(Engine.getConfig().resourcesConfig().resourceDirectory, assetPath);
+        return Path.of(Engine.getConfig().resourcesConfig().rootDirectory, assetPath);
     }
 }
