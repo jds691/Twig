@@ -1,5 +1,7 @@
 package com.neo.twig.audio;
 
+import com.neo.twig.events.Event;
+
 import java.util.ArrayList;
 
 @SuppressWarnings("unused")
@@ -8,6 +10,7 @@ public class AudioBus {
     private ArrayList<AudioBus> childBuses;
     private String name;
     private float volume = 1f;
+    private Event<Float> onVolumeChanged = new Event<Float>();
 
     public AudioBus() {
         name = "";
@@ -23,6 +26,7 @@ public class AudioBus {
     public void addChildBus(AudioBus bus) {
         childBuses.add(bus);
         bus.parentBus = this;
+        onVolumeChanged.addHandler(bus::handleParentBusVolumeChange);
     }
 
     public AudioBus getChildBus(String name) {
@@ -49,6 +53,7 @@ public class AudioBus {
 
     public void setVolume(float volume) {
         this.volume = volume;
+        onVolumeChanged.emit(volume);
     }
 
     public float getMixedVolume() {
@@ -56,5 +61,13 @@ public class AudioBus {
             return parentBus.getMixedVolume() * volume;
         else
             return volume;
+    }
+
+    private void handleParentBusVolumeChange(float rawVolume) {
+        onVolumeChanged.emit(getVolume());
+    }
+
+    public Event<Float> getOnVolumeChangedEvent() {
+        return onVolumeChanged;
     }
 }

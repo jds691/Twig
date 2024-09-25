@@ -1,5 +1,6 @@
 package com.neo.twig.audio.FX;
 
+import com.neo.twig.audio.AudioBus;
 import com.neo.twig.audio.AudioPlayer;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -69,6 +70,22 @@ public class FXStreamAudioPlayer extends AudioPlayer {
     public void setVolume(float volume) {
         super.setVolume(volume);
 
+        mediaPlayer.setVolume(getVolume());
+    }
+
+    @Override
+    public void setAudioBus(AudioBus bus) {
+        AudioBus currentBus = getAudioBus();
+        if (currentBus != null)
+            currentBus.getOnVolumeChangedEvent().removeHandler(this::handleVolumeChange);
+
+        super.setAudioBus(bus);
+
+        bus.getOnVolumeChangedEvent().addHandler(this::handleVolumeChange);
+        mediaPlayer.setVolume(bus.getMixedVolume());
+    }
+
+    private void handleVolumeChange(float ignored) {
         mediaPlayer.setVolume(getVolume());
     }
 }

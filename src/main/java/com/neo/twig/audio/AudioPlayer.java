@@ -34,8 +34,8 @@ public abstract class AudioPlayer {
         return audioBus;
     }
 
-    public void setAudioBus(String busPath) {
-        audioBus = Engine.getAudioService().getAudioBus(busPath);
+    public final void setAudioBus(String busPath) {
+        setAudioBus(Engine.getAudioService().getAudioBus(busPath));
     }
 
     public void setAudioBus(AudioBus bus) {
