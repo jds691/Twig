@@ -25,6 +25,7 @@ public class FXOneshotAudioPlayer extends AudioPlayer {
             audioClip.setCycleCount(1);
         }
 
+        audioClip.setVolume(getVolume());
         audioClip.play();
     }
 
@@ -42,5 +43,12 @@ public class FXOneshotAudioPlayer extends AudioPlayer {
         super.release();
 
         audioClip = null;
+    }
+
+    @Override
+    public void setVolume(float volume) {
+        super.setVolume(volume);
+
+        audioClip.setVolume(getVolume());
     }
 }

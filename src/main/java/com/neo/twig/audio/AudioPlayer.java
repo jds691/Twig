@@ -8,6 +8,8 @@ import java.net.URI;
 public abstract class AudioPlayer {
     protected Runnable onReadyCallback;
     protected boolean looping;
+    private AudioBus audioBus;
+    private float volume = 1;
 
     public AudioPlayer() {
     }
@@ -29,11 +31,15 @@ public abstract class AudioPlayer {
     }
 
     public AudioBus getAudioBus() {
-        return null;
+        return audioBus;
+    }
+
+    public void setAudioBus(String busPath) {
+        audioBus = Engine.getAudioService().getAudioBus(busPath);
     }
 
     public void setAudioBus(AudioBus bus) {
-
+        audioBus = bus;
     }
 
     public boolean getLooping() {
@@ -46,6 +52,18 @@ public abstract class AudioPlayer {
 
     public void setOnReadyCallback(Runnable callback) {
         onReadyCallback = callback;
+    }
+
+    public void setVolume(float volume) {
+        this.volume = volume;
+    }
+
+    public float getVolume() {
+        if (audioBus != null) {
+            return audioBus.getMixedVolume() * volume;
+        } else {
+            return volume;
+        }
     }
 
     enum State {

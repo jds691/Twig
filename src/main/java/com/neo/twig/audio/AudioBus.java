@@ -7,7 +7,7 @@ public class AudioBus {
     private AudioBus parentBus;
     private ArrayList<AudioBus> childBuses;
     private String name;
-    private float m_Volume = 1f;
+    private float volume = 1f;
 
     public AudioBus() {
         name = "";
@@ -44,17 +44,17 @@ public class AudioBus {
     }
 
     public float getVolume() {
-        return m_Volume;
+        return volume;
     }
 
     public void setVolume(float volume) {
-        m_Volume = volume;
+        this.volume = volume;
     }
 
     public float getMixedVolume() {
         if (parentBus != null)
-            return parentBus.getMixedVolume() * m_Volume;
+            return parentBus.getMixedVolume() * volume;
         else
-            return m_Volume;
+            return volume;
     }
 }

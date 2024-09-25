@@ -20,6 +20,7 @@ public class FXStreamAudioPlayer extends AudioPlayer {
 
     @Override
     public void play() {
+        mediaPlayer.setVolume(getVolume());
         mediaPlayer.play();
     }
 
@@ -62,5 +63,12 @@ public class FXStreamAudioPlayer extends AudioPlayer {
         if (mediaPlayer.getStatus() == MediaPlayer.Status.READY) {
             callback.run();
         }
+    }
+
+    @Override
+    public void setVolume(float volume) {
+        super.setVolume(volume);
+
+        mediaPlayer.setVolume(getVolume());
     }
 }
