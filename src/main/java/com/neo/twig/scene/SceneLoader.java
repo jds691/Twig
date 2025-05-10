@@ -1,6 +1,5 @@
 package com.neo.twig.scene;
 
-import com.neo.twig.Engine;
 import com.neo.twig.annotations.DontSerialize;
 import com.neo.twig.annotations.ForceSerialize;
 import com.neo.twig.logger.Logger;
@@ -98,7 +97,7 @@ final class SceneLoader {
     }
 
     private static NodeComponent parseComponent(JSONObject json) {
-        String componentType = (String) json.get("type");
+        String componentType = (String) json.get("__T__");
         Class<? extends NodeComponent> componentClass;
 
         try {
